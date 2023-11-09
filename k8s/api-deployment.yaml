@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: peliculas-api-deployment
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: peliculas-api
+  template:
+    metadata:
+      labels:
+        app: peliculas-api
+    spec:
+      containers:
+      - name: peliculas-api
+        image: us-central1-docker.pkg.dev/laboratorioeafitkubernetes/api-peliculas/peliculas-api:v1 # reemplaza con el nombre de tu imagen en el registro de contenedores
+        ports:
+        - containerPort: 5000
+        env:
+        - name: FLASK_APP
+          value: "entrypoint:app"
+        - name: FLASK_ENV
+          value: "development"
+        - name: APP_SETTINGS_MODULE
+          value: "config.default"
+        - name: DATABASE_URL
+          value: "postgresql://braestqui:test1234@peliculas-db/peliculas_db"
+      restartPolicy: Always

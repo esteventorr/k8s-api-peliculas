@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: peliculas-api-service
+spec:
+  selector:
+    app: peliculas-api
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer # Esto creará un LoadBalancer en GKE para acceso externo
