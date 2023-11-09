@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  peliculas-api:
+    build: ./api-peliculas
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=entrypoint:app
+      - FLASK_ENV=development
+      - APP_SETTINGS_MODULE=config.default
+      - DATABASE_URL=postgresql://postgres:password@peliculas-db:5432/peliculas
+    depends_on:
+      - peliculas-db
+
+  peliculas-db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=peliculas_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
